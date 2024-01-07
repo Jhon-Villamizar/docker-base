@@ -1,0 +1,32 @@
+version: '3'
+services:
+  db:
+    image: mysql:latest
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=mydatabase
+      - MYSQL_USER=jhon
+      - MYSQL_PASSWORD=123456
+    volumes:
+      - mysql_data:/var/lib/mysql
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_HOST=db
+      - DATABASE_PORT=3306
+      - DATABASE_USERNAME=jhon
+      - DATABASE_PASSWORD=123456
+      - DATABASE_NAME=mydatabase
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "4000:4000"
+volumes:
+  mysql_data:
